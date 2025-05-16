@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+
+  auth-service:
+    depends_on:
+      - postgres
+
+  catalog-service:
+    depends_on:
+      - postgres
+
+  order-service:
+    depends_on:
+      - catalog-service
+      - postgres
+  
+  delivery-service:
+    depends_on:
+      - order-service
+      - catalog-service
+      - postgres
+  
+  gateway-service:
+    depends_on:
+      - auth-service
+      - delivery-service
+      - order-service
+      - catalog-service
+      - file-service
+      - postgres
+ 
+  file-service:
+    depends_on:
+      - catalog-service

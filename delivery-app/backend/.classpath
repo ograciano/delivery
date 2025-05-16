@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="catalog-service/src"/>
+	<classpathentry kind="lib" path="catalog-service/build/libs/catalog-service-1.0.0.jar"/>
+	<classpathentry kind="lib" path="catalog-service/build/libs/catalog-service-1.0.0-plain.jar"/>
+	<classpathentry kind="lib" path="catalog-service/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="catalog-service/build/classes/java/main"/>
+</classpath>

@@ -1,0 +1,32 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: file-service
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+
+minio:
+  url: http://minio:9000
+#  urlExpose: http://189.155.146.62:9000
+  urlExpose: http://localhost:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: delivery-files
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+aws:
+  s3:
+    access-key: YOUR_ACCESS_KEY
+    secret-key: YOUR_SECRET_KEY
+    region: us-east-1
+    bucket: delivery-files
+    endpoint: http://minio:8086

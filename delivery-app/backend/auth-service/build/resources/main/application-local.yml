@@ -1,0 +1,33 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:postgresql://postgres:5432/delivery_db
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  main:
+    allow-bean-definition-overriding: true
+
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: false
+    oauth2-redirect-url: ""
+    persist-authorization: true
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  default-produces-media-type: application/json
+
+jwt:
+  secret: mysecretkeymysecretkeymysecretkey1234
+  expiration: 86400000 # 1 día
+
