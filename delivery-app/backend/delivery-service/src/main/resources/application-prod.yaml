@@ -14,6 +14,10 @@ spring:
     properties:
       hibernate:
         format_sql: false
+  elasticsearch:
+    uris: http://elasticsearch:9200
+    connection-timeout: 5s
+    socket-timeout: 3s
   rabbitmq:
     host: rabbitmq
     port: 5672

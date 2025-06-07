@@ -8,9 +8,9 @@ import com.delivery.order.model.Order;
 import com.delivery.order.model.Product;
 import com.delivery.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.delivery.order.service.OrderElasticsearchService;
+import com.delivery.order.model.search.OrderSearch;
+import com.delivery.order.mappers.Mappers;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,6 +26,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CatalogClient catalogClient;
     private final OrderEventPublisher orderEventPublisher;
+    private final OrderElasticsearchService orderElasticsearchService;
 
     public Flux<Order> getAllOrders() {
         return Flux.defer(() -> Flux.fromIterable(orderRepository.findAll()));
@@ -65,6 +66,9 @@ public class OrderService {
 
                     Order savedOrder = orderRepository.save(order);
                     orderEventPublisher.publishOrderCreated(savedOrder);
+
+                    OrderSearch orderSearch = Mappers.map(savedOrder, OrderSearch.class);
+                    orderElasticsearchService.save(orderSearch);
 
                     return catalogClient.updateStockAfterOrder(order.getProducts())
                             .thenReturn(savedOrder);
@@ -141,6 +145,9 @@ public class OrderService {
             Order updatedOrder = orderRepository.save(order);
             orderEventPublisher.publishOrderPaid(updatedOrder);
 
+            OrderSearch orderSearch = Mappers.map(updatedOrder, OrderSearch.class);
+            orderElasticsearchService.save(orderSearch);
+
             return Mono.just(updatedOrder);
         });
     }
@@ -206,6 +213,10 @@ public class OrderService {
             order.setStatus(status);
             Order savedOrder = orderRepository.save(order);
             sendMessageStatus(status, savedOrder);
+
+            OrderSearch orderSearch = Mappers.map(savedOrder, OrderSearch.class);
+            orderElasticsearchService.save(orderSearch);
+
             return savedOrder;
         });
     }
