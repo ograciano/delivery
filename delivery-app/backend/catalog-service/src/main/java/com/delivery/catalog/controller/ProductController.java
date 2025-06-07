@@ -44,7 +44,7 @@ public class ProductController {
             @RequestPart(value = "galleryImages", required = false) Flux<FilePart> galleryImages) {
 
         return productImageService.uploadImages(id, principalImage, galleryImages)
-                .thenReturn(ResponseEntity.ok().build());
+                .map(ResponseEntity::ok);
     }
 }
 
