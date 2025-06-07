@@ -1,4 +1,22 @@
 #!/bin/bash
+set -euo pipefail
+
+# Check prerequisites
+usage() {
+    echo "Usage: $0"
+}
+
+if ! command -v docker >/dev/null 2>&1; then
+    echo "Error: docker is required."
+    usage
+    exit 1
+fi
+
+if ! command -v docker-compose >/dev/null 2>&1; then
+    echo "Error: docker-compose is required."
+    usage
+    exit 1
+fi
 
 # Levantar todo con docker-compose
 echo "Levantando infraestructura local con Docker Compose..."
