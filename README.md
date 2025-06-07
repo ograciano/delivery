@@ -59,3 +59,7 @@ The gateway aggregates the OpenAPI specifications of all microservices. Open the
 Swagger UI at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 and select the desired service from the dropdown.
 
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
