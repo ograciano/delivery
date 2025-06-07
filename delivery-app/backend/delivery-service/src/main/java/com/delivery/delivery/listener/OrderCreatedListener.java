@@ -3,6 +3,9 @@ package com.delivery.delivery.listener;
 import com.delivery.delivery.model.Assignment;
 import com.delivery.delivery.model.Order;
 import com.delivery.delivery.repository.AssignmentRepository;
+import com.delivery.delivery.service.AssignmentElasticsearchService;
+import com.delivery.delivery.mappers.Mappers;
+import com.delivery.delivery.model.search.AssignmentSearch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +22,7 @@ import java.io.IOException;
 public class OrderCreatedListener {
 
     private final AssignmentRepository assignmentRepository;
+    private final AssignmentElasticsearchService assignmentElasticsearchService;
     private final ObjectMapper objectMapper;
 
     @RabbitListener(queues = "order.created.queue", ackMode = "MANUAL")
@@ -33,7 +37,8 @@ public class OrderCreatedListener {
             assignment.setOrderId(order.getId());
             assignment.setStatus("pending");
 
-            Assignment assignmentSaved= assignmentRepository.save(assignment);
+            Assignment assignmentSaved = assignmentRepository.save(assignment);
+            assignmentElasticsearchService.save(Mappers.map(assignmentSaved, AssignmentSearch.class));
             log.info("Assignment created: {}", assignmentSaved.getOrderId());
 
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

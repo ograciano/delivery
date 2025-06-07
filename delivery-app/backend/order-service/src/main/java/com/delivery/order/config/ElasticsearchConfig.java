@@ -6,5 +6,4 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.delivery.order.elasticsearch.repository")
 public class ElasticsearchConfig {
-    // Additional configuration if needed
 }
