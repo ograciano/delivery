@@ -6,6 +6,8 @@ import com.delivery.catalog.model.ProductSearch;
 import com.delivery.catalog.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,11 +22,16 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductElasticsearchService productElasticsearchService;
 
-    public Flux<Product> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return Flux.fromIterable(products);
+    @Cacheable(value = "products", key = "'all'")
+    public List<Product> getCachedProducts() {
+        return productRepository.findAll();
     }
 
+    public Flux<Product> getAllProducts() {
+        return Flux.fromIterable(getCachedProducts());
+    }
+
+    @CacheEvict(value = "products", allEntries = true)
     public Mono<Product> createProduct(Product product) {
 
         Product saved = productRepository.save(product);
@@ -33,6 +40,7 @@ public class ProductService {
         return Mono.just(saved);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public Mono<Void> updateStock(List<Product> productsOrdered) {
         productsOrdered.forEach(productOrdered -> {
             log.info("Actualizando stock para el producto: {}", productOrdered.getName());
