@@ -4,6 +4,9 @@ import com.delivery.delivery.client.OrderClient;
 import com.delivery.delivery.model.Assignment;
 import com.delivery.delivery.model.Driver;
 import com.delivery.delivery.model.Order;
+import com.delivery.delivery.service.AssignmentElasticsearchService;
+import com.delivery.delivery.model.search.AssignmentSearch;
+import com.delivery.delivery.mappers.Mappers;
 import com.delivery.delivery.repository.AssignmentRepository;
 import com.delivery.delivery.repository.DriverRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ public class AssignmentService {
     private final AssignmentRepository assignmentRepository;
     private final DriverRepository driverRepository;
     private final OrderClient orderClient;
+    private final AssignmentElasticsearchService assignmentElasticsearchService;
 
     public Flux<Assignment> getAllAssignments() {
         List<Assignment> assignments = assignmentRepository.findAll();
@@ -45,6 +49,8 @@ public class AssignmentService {
                     .build();
 
             Assignment savedAssignment = assignmentRepository.save(assignment);
+            AssignmentSearch search = Mappers.map(savedAssignment, AssignmentSearch.class);
+            assignmentElasticsearchService.save(search);
             return savedAssignment;
         }).flatMap(assignment ->
                 orderClient.updateOrderStatus(orderId, "assigned").thenReturn(assignment)
@@ -58,6 +64,8 @@ public class AssignmentService {
 
             assignment.setStatus(status);
             Assignment updatedAssignment = assignmentRepository.save(assignment);
+            AssignmentSearch search = Mappers.map(updatedAssignment, AssignmentSearch.class);
+            assignmentElasticsearchService.save(search);
 
             return updatedAssignment;
         }).flatMap(updatedAssignment -> {
