@@ -71,6 +71,55 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
 
+  delivery-service:
+    build:
+      context: ./backend/delivery-service
+    container_name: delivery-service
+    restart: always
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+
+  auth-service:
+    build:
+      context: ./backend/auth-service
+    container_name: auth-service
+    restart: always
+    ports:
+      - "8084:8084"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+
+  gateway-service:
+    build:
+      context: ./backend/gateway-service
+    container_name: gateway-service
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+      - minio
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+
+  file-service:
+    build:
+      context: ./backend/file-service
+    container_name: file-service
+    restart: always
+    ports:
+      - "8086:8086"
+    depends_on:
+      - rabbitmq
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+
 volumes:
   postgres_data:
   minio_data:
