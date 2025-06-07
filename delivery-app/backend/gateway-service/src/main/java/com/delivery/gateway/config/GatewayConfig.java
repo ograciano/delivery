@@ -33,6 +33,22 @@ public class GatewayConfig {
                 .route("file-service", r -> r.path("/api/files/**")
                         .filters(f -> f.filter(authenticationFilter))
                         .uri("http://file-service:8086"))
+                // OpenAPI documentation endpoints for each microservice
+                .route("auth-service-docs", r -> r.path("/api/docs/auth")
+                        .filters(f -> f.rewritePath("/api/docs/auth", "/v3/api-docs"))
+                        .uri("http://auth-service:8084"))
+                .route("catalog-service-docs", r -> r.path("/api/docs/catalog")
+                        .filters(f -> f.rewritePath("/api/docs/catalog", "/v3/api-docs"))
+                        .uri("http://catalog-service:8081"))
+                .route("order-service-docs", r -> r.path("/api/docs/order")
+                        .filters(f -> f.rewritePath("/api/docs/order", "/v3/api-docs"))
+                        .uri("http://order-service:8082"))
+                .route("delivery-service-docs", r -> r.path("/api/docs/delivery")
+                        .filters(f -> f.rewritePath("/api/docs/delivery", "/v3/api-docs"))
+                        .uri("http://delivery-service:8083"))
+                .route("file-service-docs", r -> r.path("/api/docs/file")
+                        .filters(f -> f.rewritePath("/api/docs/file", "/v3/api-docs"))
+                        .uri("http://file-service:8086"))
                 .build();
     }
 }

@@ -12,3 +12,19 @@ management:
 
 jwt:
   secret: ${JWT_SECRET} # en producción se lee de variable de entorno
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: gateway
+        url: /v3/api-docs
+      - name: auth-service
+        url: /api/docs/auth
+      - name: catalog-service
+        url: /api/docs/catalog
+      - name: order-service
+        url: /api/docs/order
+      - name: delivery-service
+        url: /api/docs/delivery
+      - name: file-service
+        url: /api/docs/file

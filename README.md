@@ -53,3 +53,9 @@ All services are implemented using Spring Boot and expose reactive REST APIs.
 
 Support services like PostgreSQL, Redis, RabbitMQ, MinIO, Prometheus, Grafana and the ELK stack are also started by Docker Compose.
 
+## API Documentation
+
+The gateway aggregates the OpenAPI specifications of all microservices. Open the
+Swagger UI at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+and select the desired service from the dropdown.
+
