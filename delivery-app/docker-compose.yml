@@ -85,6 +85,9 @@ services:
     container_name: logstash
     ports:
       - "5000:5000"
+    volumes:
+      - ./infrastructure/logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logs:/logs
     networks:
       - delivery-network
 
@@ -106,6 +109,8 @@ services:
       - postgres
     environment:
       SPRING_PROFILES_ACTIVE: local
+    volumes:
+      - ./logs/catalog-service:/app/logs
     networks:
       - delivery-network
 
@@ -119,6 +124,8 @@ services:
       - postgres
     environment:
       SPRING_PROFILES_ACTIVE: local
+    volumes:
+      - ./logs/order-service:/app/logs
     networks:
       - delivery-network
 
@@ -132,6 +139,8 @@ services:
       - postgres
     environment:
       SPRING_PROFILES_ACTIVE: local
+    volumes:
+      - ./logs/delivery-service:/app/logs
     networks:
       - delivery-network
 
@@ -145,6 +154,8 @@ services:
       - postgres
     environment:
       SPRING_PROFILES_ACTIVE: local
+    volumes:
+      - ./logs/auth-service:/app/logs
     networks:
       - delivery-network
   
@@ -159,6 +170,8 @@ services:
     depends_on:
       - rabbitmq
       - minio
+    volumes:
+      - ./logs/gateway-service:/app/logs
     networks:
       - delivery-network
 
@@ -172,6 +185,8 @@ services:
       - SPRING_PROFILES_ACTIVE=local
     depends_on:
       - rabbitmq
+    volumes:
+      - ./logs/file-service:/app/logs
     networks:
       - delivery-network
 
