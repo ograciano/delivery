@@ -31,4 +31,4 @@ springdoc:
 
 jwt:
   secret: mysecretkeymysecretkeymysecretkey1234
-  expirationMs: 86400000 # 1 día
+  expiration: 86400000 # 1 día
