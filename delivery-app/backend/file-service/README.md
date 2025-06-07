@@ -14,12 +14,16 @@ Microservicio para gestión de archivos en MinIO (desarrollo) o AWS S3 (producci
 - `minio.url`
 - `minio.access-key`
 - `minio.secret-key`
+- `minio.bucket-name`
 - `aws.s3.bucket`
-- `aws.accessKeyId`
-- `aws.secretAccessKey`
+- `aws.s3.access-key`
+- `aws.s3.secret-key`
+- `aws.s3.region`
+- `aws.s3.endpoint`
 
 ## Docker
 ```bash
 ./gradlew clean build
 docker build -t file-service .
-docker run -p 8085:8085 file-service
+docker run -p 8086:8086 file-service
+```
