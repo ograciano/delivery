@@ -26,14 +26,14 @@ public class OrderCancelledListener {
     public void handleOrderCancelled(Message message, Channel channel) throws IOException {
         try {
             Order order = objectMapper.readValue(message.getBody(), Order.class);
-            log.info("Received DELIVERED order event: {}", order);
+            log.info("Received CANCELLED order event: {}", order);
 
             commons.updateAssignmentAndDriverStatus(order, "cancelled");
 
             // ACK manual: confirmamos que el mensaje fue procesado correctamente
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
-            log.error("Error processing delivered order: {}", e.getMessage(), e);
+            log.error("Error processing cancelled order: {}", e.getMessage(), e);
 
             try {
                 // NACK manual: rechazamos el mensaje, lo podemos requeuear o no
