@@ -1,16 +1,29 @@
 # File Service - DeliveryApp
 
-Microservicio para gestión de archivos en MinIO (desarrollo) o AWS S3 (producción).
+Handles file uploads using MinIO for local development or S3 in production.
+
+## Running locally
+
+Start the infrastructure from the repository root:
+
+```bash
+./start_infra_and_show_urls.sh
+```
+
+Launch the service on port **8086** with:
+
+```bash
+./gradlew bootRun --args='--spring.profiles.active=local'
+```
 
 ## Endpoints
-- POST `/api/files/upload` : Subir archivo
-- GET `/api/files/download/{filename}` : Descargar archivo
+- `POST /api/files/upload` – upload a file
 
-## Perfiles
-- `local` → usa MinIO
-- `prod` → usa AWS S3 (preparado para futura integración)
+## Profiles
+- `local` → uses MinIO
+- `prod` → prepared for AWS S3
 
-## Variables importantes
+## Important variables
 - `minio.url`
 - `minio.access-key`
 - `minio.secret-key`
