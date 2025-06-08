@@ -1,17 +1,33 @@
 # Catalog Service
 
-This microservice exposes the product catalog API.
+Service responsible for managing products and categories.
 
-## Running Locally
+## Running locally
 
-Use Docker Compose to start the infrastructure, including PostgreSQL and Redis:
+Start the infrastructure from the repository root:
 
 ```bash
 ./start_infra_and_show_urls.sh
 ```
 
-Run the service with the `local` profile (already configured in the compose file). It connects to Redis on `redis:6379`.
+Then launch the service on port **8081** using the `local` profile:
 
-## Redis Caching
+```bash
+./gradlew bootRun --args='--spring.profiles.active=local'
+```
 
-The service uses Spring Cache backed by Redis to cache the list of products. Cached data is refreshed when products are created or stock is updated.
+## Key endpoints
+
+- `GET /api/products` – list all products
+- `POST /api/products` – create a product
+- `POST /api/products/update-stock` – update stock after an order
+- `POST /api/products/{id}/files` – upload images for a product
+- `GET /api/categories` – list categories
+- `POST /api/categories` – create a category
+- `GET /api/products/search` – list indexed products
+- `GET /api/products/search/{id}` – get indexed product by id
+- `GET /api/products/search/name/{name}` – search product by name
+
+## Redis caching
+
+Products are cached in Redis and invalidated when new products are added or stock changes.
